@@ -1,0 +1,17 @@
+﻿@layout NoLayout
+@inject NavigationManager NavigationManager
+
+<section class="container">
+    <div class="box"><h2>404</h2></div>
+    <button class="btn" @onclick="GoHome">Return Home</button>
+</section>
+
+
+
+@code {
+
+    void GoHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

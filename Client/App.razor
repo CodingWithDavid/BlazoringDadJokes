@@ -1,0 +1,11 @@
+
+@using BlazorDadJokes.Client.Controls._404Page
+
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <Custom404 />
+    </NotFound>
+</Router>

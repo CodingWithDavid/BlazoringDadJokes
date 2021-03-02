@@ -1,0 +1,52 @@
+﻿@page "/"
+
+@inject HttpClient Http
+@inject Services.ImageService service
+
+@using System.Net.Http.Headers
+
+<div class="container">
+    <h3>Blazor Dad Jokes</h3>
+    <div><img src="@imagePath" width="200px" height="200px" /></div>
+    <div id="joke" class="joke">@joke</div>
+    <button id="jokeBtn" class="btn" @onclick="@(()=>GetNewJoke())">Get Another Joke</button>
+</div>
+
+@code{
+
+    string joke = "";
+    string imagePath = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(joke))
+        {
+            await GetNewJoke();
+        }
+    }
+
+
+    private async Task GetNewJoke()
+    {
+        try
+        {
+            MediaTypeWithQualityHeaderValue appt = new MediaTypeWithQualityHeaderValue("application/json");
+            Http.DefaultRequestHeaders.Accept.Add(appt);
+
+            var result = await Http.GetFromJsonAsync<JokeResponse>("https://icanhazdadjoke.com");
+            joke = result.Joke;
+            imagePath = $"img/dad{service.GetBackgroundImage()}.jpg";
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
+
+    internal class JokeResponse
+    {
+        public string Id { get; set; }
+        public string Joke { get; set; }
+        public int Status { get; set; }
+    }
+}
